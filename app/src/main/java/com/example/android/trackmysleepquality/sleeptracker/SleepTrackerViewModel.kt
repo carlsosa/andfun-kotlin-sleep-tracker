@@ -21,7 +21,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.formatNights
@@ -41,7 +41,7 @@ class SleepTrackerViewModel(
     /**
      * Converted nights to Spanned for displaying.
      */
-    val nightsString = Transformations.map(nights) { nights ->
+    val nightsString = nights.map { nights ->
         formatNights(nights, application.resources)
     }
 
@@ -60,12 +60,12 @@ class SleepTrackerViewModel(
      *
      * This is private because we don't want to expose setting this value to the Fragment.
      */
-    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
+    private val _navigateToSleepQuality = MutableLiveData<SleepNight?>()
 
     /**
      * If this is non-null, immediately navigate to [SleepQualityFragment] and call [doneNavigating]
      */
-    val navigateToSleepQuality: LiveData<SleepNight>
+    val navigateToSleepQuality: LiveData<SleepNight?>
         get() = _navigateToSleepQuality
 
     /**
